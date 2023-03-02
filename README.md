@@ -11,8 +11,16 @@ Serve files upon GET request. Only allow ips from constants/my_constants.py to i
 Defining allowed ips, and username/password.
 
 # how to run
-## File Server
+
+
+## Running individual Component
+
+### File Server
 ```python
-cd "File Server"
-python file_server.py
+python "File Server/file_server.py"
+```
+
+### API Server
+```python
+python API/main.py
 ```
