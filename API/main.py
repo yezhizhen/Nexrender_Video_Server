@@ -1,9 +1,11 @@
-from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
-#import socketserver
+from http.server import BaseHTTPRequestHandler #,ThreadingHTTPServer
+import socketserver
 import argparse
 import base64
 import json
 from constants.my_constants import *
+from video_generation import generate_video_from_string
+import requests
 
 PORT = 80
 
@@ -28,7 +30,8 @@ class ServerHandler(BaseHTTPRequestHandler):
         elif self.headers.get('Authorization') == None:
             self.do_AUTHHEAD()
             self.wfile.write(b'no auth header received')
-        elif self.headers.get('Authorization') == 'Basic '+self.auth:              
+        elif self.headers.get('Authorization') == 'Basic '+self.auth:
+            print(f"Success auth from {self.client_address[0]}")              
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length).decode('utf-8')
             post_data = json.loads(post_data)
@@ -38,25 +41,28 @@ class ServerHandler(BaseHTTPRequestHandler):
             file_name = post_data["json_file"]["actions"]["postrender"][0]["output"]
             post_data["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
             
-            response_data = json.dumps({"filename":file_name}).encode()
+            body = {"filename":file_name}
+            response_data = json.dumps(body).encode()
             self.wfile.write(response_data)
 
             #print(post_data["csv_file"])
-
             #trigger a vid gen task
+            generate_video_from_string(post_data["json_file"], post_data["csv_file"])
 
             #send video after gen
+            requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params = body)
+
             
         else:
             self.do_AUTHHEAD()
             self.wfile.write(self.headers.get('Authorization').encode('utf-8'))
             self.wfile.write(b'not authenticated')
         
-        def log_message(self, format, *args):
-            """
-            Disable logging.
-            """
-            return      
+    def log_message(self, format, *args):
+        """
+        Disable logging.
+        """
+        return      
 
 def main():
     """
@@ -75,7 +81,9 @@ def main():
     # Create server
     handler = ServerHandler
     handler.auth = auth
-    httpd = ThreadingHTTPServer(("", args.port), handler)
+    #
+    #httpd = ThreadingHTTPServer(("", args.port), handler)
+    httpd = socketserver.TCPServer(("", args.port), handler)
     # Start server
     print('Serving at port', args.port)
     httpd.serve_forever()
