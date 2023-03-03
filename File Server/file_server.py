@@ -4,7 +4,7 @@ python "file_server.py"
 
 import os
 import argparse
-#import socketserver
+import socketserver
 from http.server import ThreadingHTTPServer
 import base64
 
@@ -44,7 +44,9 @@ class AuthHandler(SimpleHTTPRequestHandler):
             self.do_AUTHHEAD()
             self.wfile.write(b'no auth header received')
         elif self.headers.get('Authorization') == 'Basic '+self.auth:
+            print(f"Authenticated {self.client_address[0]}")
             SimpleHTTPRequestHandler.do_GET(self)
+
         else:
             self.do_AUTHHEAD()
             self.wfile.write(self.headers.get('Authorization').encode('utf-8'))
@@ -77,6 +79,7 @@ def main():
     handler = AuthHandler
     handler.auth = auth
     httpd = ThreadingHTTPServer(("", args.port), handler)
+    #httpd = socketserver.TCPServer(("", args.port), handler)
 
     # Start server
     print('Serving at port', args.port)

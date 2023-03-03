@@ -2,10 +2,14 @@ from http.server import BaseHTTPRequestHandler #,ThreadingHTTPServer
 import socketserver
 import argparse
 import base64
+import threading
 import json
 from constants.my_constants import *
 from video_generation import generate_video_from_string
 import requests
+from datetime import datetime
+import pytz
+import pysftp
 
 PORT = 80
 
@@ -13,8 +17,27 @@ PORT = 80
 #server to handle POST of csv and json
 """
 JSON received 
-{"json_file":"...","csv_file":"..."}
+[{"json_file":"...","csv_file":"..."},{"json_file":"...","csv_file":"..."},{"json_file":"...","csv_file":"..."}]
 """
+
+def background_generation_task(post_data):
+    for single_request in post_data:
+        file_name = single_request["json_file"]["actions"]["postrender"][0]["output"]
+        single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
+        #print(single_request["csv_file"])
+        #trigger a vid gen task
+        template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
+
+        #SFTP the file
+
+        with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
+            sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
+
+        print(f'Upload done for {file_name}.')
+
+        #confirm completion of  video transferring
+        requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name})
+    print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.")
 
 class ServerHandler(BaseHTTPRequestHandler):
     def do_AUTHHEAD(self):
@@ -43,21 +66,15 @@ class ServerHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            file_name = post_data["json_file"]["actions"]["postrender"][0]["output"]
-            post_data["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
-            
-            body = {"filename":file_name}
+
+            body = {"status": "Success"}
             response_data = json.dumps(body).encode()
             self.wfile.write(response_data)
 
-            #print(post_data["csv_file"])
-            #trigger a vid gen task
-            generate_video_from_string(post_data["json_file"], post_data["csv_file"])
+            #start a thread
+            t = threading.Thread(target=background_generation_task, args=(post_data,), daemon=True)
+            t.start()
 
-            #send video after gen
-            requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params = body)
-
-            
         else:
             self.do_AUTHHEAD()
             self.wfile.write(self.headers.get('Authorization').encode('utf-8'))

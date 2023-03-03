@@ -26,4 +26,5 @@ def generate_video_from_string(json, csv):
         f.write(csv)
 
     generate_video(json_path)
+    return template_no
     

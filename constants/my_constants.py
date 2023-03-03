@@ -7,3 +7,7 @@ DOWNLOAD_INITIATOR_ENDPOINT = 'http://122.248.207.203/wcxwebservice/ConfirmVideo
 NEXRENDER_PATH= "G:/Nexrender_Video_Server/nexrender-cli-win64.exe"
 TEMP_JSON_PATH = "G:/Desktop/Nexrender/Template-{}/{}.json"
 TEMP_CSV_PATH = "G:/Desktop/Nexrender/Template-{}/Data/data.csv"
+PRIVATE_KEY_PATH = "G:/Nexrender_Video_Server/wealthcx_sftp.pem"
+SFTP_DEST = '/server/wcx_storage/public/video/RFT{}/'     
+SFTP_HOST = "122.248.207.203"              
+SFTP_USERNAME = "wealthcx"      

@@ -1,2 +1,5 @@
 *.exe
 __pycache__
+*.mp4
+*.pem
+*.ppk
