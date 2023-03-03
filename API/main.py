@@ -11,6 +11,11 @@ PORT = 80
 
 
 #server to handle POST of csv and json
+"""
+JSON received 
+{"json_file":"...","csv_file":"..."}
+"""
+
 class ServerHandler(BaseHTTPRequestHandler):
     def do_AUTHHEAD(self):
         self.send_response(401)
