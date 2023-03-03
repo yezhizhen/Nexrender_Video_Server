@@ -1,6 +1,7 @@
 import subprocess
 from constants.my_constants import *
 import re
+from json import dumps
 #import uuid
 
 def generate_video(json_path):
@@ -19,7 +20,7 @@ def generate_video_from_string(json, csv):
     csv_path = TEMP_CSV_PATH.format(template_no)
     #write json to file
     with open(json_path,"w") as f:
-        f.write(json)
+        f.write(dumps(json))
 
     with open(csv_path,"w") as f:
         f.write(csv)
