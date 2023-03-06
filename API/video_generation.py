@@ -16,7 +16,7 @@ def extract_template_no(input, exp = r'-Template-(\d+)_'):
 
 def generate_video_from_string(json, csv):
     template_no = extract_template_no(json["template"]["composition"])
-    json_path = TEMP_JSON_PATH.format(template_no,"temp.json")
+    json_path = TEMP_JSON_PATH.format(template_no,"temporary")
     csv_path = TEMP_CSV_PATH.format(template_no)
     #write json to file
     with open(json_path,"w") as f:

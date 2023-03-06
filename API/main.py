@@ -35,7 +35,7 @@ def background_generation_task(post_data):
 
         print(f'Upload done for {file_name}.')
 
-        #confirm completion of  video transferring
+        #confirm completion of video transferring
         requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name})
     print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.")
 
