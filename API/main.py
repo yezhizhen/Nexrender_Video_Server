@@ -19,25 +19,30 @@ PORT = 80
 JSON received 
 [{"json_file":"...","csv_file":"..."},{"json_file":"...","csv_file":"..."},{"json_file":"...","csv_file":"..."}]
 """
+mutex = threading.Lock()
 
 def background_generation_task(post_data):
-    for single_request in post_data:
-        file_name = single_request["json_file"]["actions"]["postrender"][0]["output"]
-        single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
-        #print(single_request["csv_file"])
-        #trigger a vid gen task
-        template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
+    mutex.acquire()
+    try:
+        for single_request in post_data:
+            file_name = single_request["json_file"]["actions"]["postrender"][0]["output"]
+            single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
+            #print(single_request["csv_file"])
+            #trigger a vid gen task
+            template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
 
-        #SFTP the file
+            #SFTP the file
 
-        with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
-            sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
+            with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
+                sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
 
-        print(f'Upload done for {file_name}.')
+            print(f'Upload done for {file_name}.')
 
-        #confirm completion of video transferring
-        requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name})
-    print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.")
+            #confirm completion of video transferring
+            requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name})
+        print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.")
+    finally:
+        mutex.release()
 
 class ServerHandler(BaseHTTPRequestHandler):
     def do_AUTHHEAD(self):
