@@ -4,3 +4,4 @@ __pycache__
 *.pem
 *.ppk
 *.crt
+constants/my_constants.py

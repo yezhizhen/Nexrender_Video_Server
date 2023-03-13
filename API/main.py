@@ -11,7 +11,7 @@ from datetime import datetime
 import pytz
 import pysftp
 #remove following line if SSL certificate is ready
-import urllib3; urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+#import urllib3; urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 PORT = 80
 
@@ -43,8 +43,8 @@ def background_generation_task(post_data):
             #confirm completion of video transferring
             #Comment after certificate ready
 
-            requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=False)
-            #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=CONFIRM_API_CERT_PATH)
+            #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=False)
+            requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=CONFIRM_API_CERT_PATH)
         print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.")
     finally:
         mutex.release()
