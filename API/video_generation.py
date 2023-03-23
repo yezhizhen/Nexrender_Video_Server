@@ -3,6 +3,7 @@ from constants.my_constants import *
 import re
 from json import dumps
 import time
+import sys
 #import uuid
 
 def generate_video(json_path):
@@ -19,28 +20,28 @@ def generate_video(json_path):
     p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path], stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
     """
 
-    p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path], stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path], stderr=sys.stdout, stdout=subprocess.PIPE)
     
     #capture stdout until rendering finished.
     #only print stdout for every 10%
-    for line in p.stdout:
+    for line in p.stdout: #this would keep the new line character in line
         
         progress = re.search("rendering progress (\d+)%", line.decode())
         if progress is not None:
-            percent = progress.group(0)
-            if percent % 10 == 0:
+            percent = progress.group(1)
+            if int(percent) % 10 == 0:
                 print(line.decode())
         else:
             res = re.findall("rendering took ~\d+\.\d+ sec", line.decode())
             if len(res) > 0:
                 print(res[0])
+                #without close, wait would cause deadlock
+                p.stdout.close()
                 break
     #rendering finished. Waiting for encoding.
+    print("Encoding..")
     start = time.time()
     p.wait()
-    error_msg = p.stderr.read().decode()
-    if len(error_msg) > 0:
-        print("Error encountred." ,error_msg, sep="\n")
     print(f"Encoding took: {time.time() - start:.2f} sec")
 
     #os.kill(p.pid, signal.SIGINT)
