@@ -31,10 +31,10 @@ def background_generation_task(post_data):
             single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
             #print(single_request["csv_file"])
             #trigger a vid gen task
+            print("Genearting " + file_name)
             template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
-
             #SFTP the file
-
+            
             with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
                 sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
 
