@@ -49,7 +49,30 @@ def background_generation_task(post_data):
     finally:
         mutex.release()
 
+
+
 class ServerHandler(BaseHTTPRequestHandler):
+    
+    def generation_handler(self):
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length).decode('utf-8')
+        post_data = json.loads(post_data)
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        body = {"status": "Success"}
+        response_data = json.dumps(body).encode()
+        self.wfile.write(response_data)
+        #start a thread
+        t = threading.Thread(target=background_generation_task, args=(post_data,), daemon=True)
+        t.start()    
+
+    def compression_handler(self):
+        pass
+
+    ROUTES_to_handler = {'/':generation_handler,'/news_compression':compression_handler}    
+    ROUTES = ROUTES_to_handler.keys()          
+
     def do_AUTHHEAD(self):
         self.send_response(401)
         self.send_header('WWW-Authenticate', 'Basic realm="Test"')
@@ -61,41 +84,36 @@ class ServerHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Your IP not allowed')
 
+    #only handle request at path /
     def do_POST(self):
-        if self.client_address[0] not in allowed_ips:
-            print(f"Invalid IP from {self.client_address[0]}")
+        if self.path not in ServerHandler.ROUTES:
+            print("Posting wrong address.")
+            self.send_response(400)
+            self.end_headers()
+            self.wfile.write(b'Not accessible.')  
+
+        elif self.address_string() not in allowed_ips:
+            print(f"Invalid IP from {self.address_string()}")
             self.invalid_IP()
         elif self.headers.get('Authorization') == None:
             self.do_AUTHHEAD()
             self.wfile.write(b'no auth header received')
         elif self.headers.get('Authorization') == 'Basic '+self.auth:
             print(f"Success auth from {self.client_address[0]}")              
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length).decode('utf-8')
-            post_data = json.loads(post_data)
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-
-            body = {"status": "Success"}
-            response_data = json.dumps(body).encode()
-            self.wfile.write(response_data)
-
-            #start a thread
-            t = threading.Thread(target=background_generation_task, args=(post_data,), daemon=True)
-            t.start()
+            ServerHandler.ROUTES_to_handler[self.path](self)
 
         else:
             self.do_AUTHHEAD()
             self.wfile.write(self.headers.get('Authorization').encode('utf-8'))
             self.wfile.write(b'not authenticated')
-        
+    
+    '''
     def log_message(self, format, *args):
         """
         Disable logging.
         """
-        return      
-
+        return
+    '''
 def main():
     """
     Main function.

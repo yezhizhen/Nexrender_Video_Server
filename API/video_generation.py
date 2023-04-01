@@ -29,7 +29,7 @@ def generate_video(json_path):
         progress = re.search("rendering progress (\d+)%", line.decode())
         if progress is not None:
             percent = progress.group(1)
-            if int(percent) % 10 == 0:
+            if int(percent) % 20 == 0:
                 print(line.decode())
         else:
             res = re.findall("rendering took ~\d+\.\d+ sec", line.decode())
