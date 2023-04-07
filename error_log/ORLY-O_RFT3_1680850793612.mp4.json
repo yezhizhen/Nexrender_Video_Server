@@ -1,0 +1,376 @@
+{
+    "template": {
+        "src": "file:///G:/Desktop/Nexrender/Template-3/Template_3_2023_V4_Nex.aep",
+        "composition": "Refinitiv-Template-3_V4"
+    },
+    "assets": [
+        {
+            "property": "Source Text",
+            "layerName": "Ticker",
+            "type": "data",
+            "value": "ORLY.O"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Brand-Name",
+            "type": "data",
+            "value": "O REILLY AUTO"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "TRBC-Classification",
+            "type": "data",
+            "value": "Auto Vehicles"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Dividend-Yield",
+            "type": "data",
+            "value": "Parts & Service Retailers"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Price-Datestamp",
+            "type": "data",
+            "value": "10 Nov 2022"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Price-Timestamp",
+            "type": "data",
+            "value": "20:00"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Current-Price",
+            "type": "data",
+            "value": "20:00"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "12m-Price-Target-High",
+            "type": "data",
+            "value": "20 MAY 2022"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "12m-Price-Target-Low",
+            "type": "data",
+            "value": "920.00"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "12m-Price-Target-Mean",
+            "type": "data",
+            "value": "975.00"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "IBES-Reccomendation",
+            "type": "data",
+            "value": "815.00"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Business-Description-(AI-Applied)",
+            "type": "data",
+            "value": "BUY"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Avergae-Score",
+            "type": "data",
+            "value": "O'Reilly Auto is a U.S. retailer of auto parts, tools, supplies and accessories. They provide DIY and professional services, parts, and programs such as battery and bulb replacement."
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Average-Score-Outlook",
+            "type": "data",
+            "value": "7"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Average-Score-Trend-Number",
+            "type": "data",
+            "value": "\u25b2"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Risk-Score",
+            "type": "data",
+            "value": "3"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Risk-Score-Trend-Number",
+            "type": "data",
+            "value": "\u2194"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Risk-Score-Outlook",
+            "type": "data",
+            "value": "2"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Beta-High",
+            "type": "data",
+            "value": "NASDAQ 100 Index"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Beta-Low",
+            "type": "data",
+            "value": "2.20"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Current-Beta",
+            "type": "data",
+            "value": "0.72"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Earnings-Score",
+            "type": "data",
+            "value": "1.2692500751921705"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Earnings-Score-Trend-Number",
+            "type": "data",
+            "value": "\u2194"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Stock-Reports-Plus-Earnings-Score-Outlook",
+            "type": "data",
+            "value": "2"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "End-of-Day-Close-Price-Week-Ago-1",
+            "type": "data",
+            "value": "572.57"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Revenue-Millions-Quaterly-Ago-1",
+            "type": "data",
+            "value": "3644.493"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Ticker",
+            "type": "data",
+            "value": "2.3260000000000005"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Brand-Name",
+            "type": "data",
+            "value": "AZO"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Current-Price",
+            "type": "data",
+            "value": "AUTOZONE INC"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Stock-Reports-Plus-Average-Score",
+            "type": "data",
+            "value": "2530.680000"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Stock-Reports-Plus-Risk-Score",
+            "type": "data",
+            "value": "8"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Stock-Reports-Plus-Earnings-Score",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Ticker",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Brand-Name",
+            "type": "data",
+            "value": "AAP"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Current-Price",
+            "type": "data",
+            "value": "ADV AUTO PARTS"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Stock-Reports-Plus-Average-Score",
+            "type": "data",
+            "value": "120.690000"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Stock-Reports-Plus-Risk-Score",
+            "type": "data",
+            "value": "7"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Stock-Reports-Plus-Earnings-Score",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Ticker",
+            "type": "data",
+            "value": "3"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Brand-Name",
+            "type": "data",
+            "value": "GPC"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Current-Price",
+            "type": "data",
+            "value": "GENUINE PARTS CO"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Stock-Reports-Plus-Average-Score",
+            "type": "data",
+            "value": "162.280000"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Stock-Reports-Plus-Risk-Score",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Stock-Reports-Plus-Earnings-Score",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Ticker",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Brand-Name",
+            "type": "data",
+            "value": "TSCO.O"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Current-Price",
+            "type": "data",
+            "value": "TRACTOR SUPPLY"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Stock-Reports-Plus-Average-Score",
+            "type": "data",
+            "value": "235.630000"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Stock-Reports-Plus-Risk-Score",
+            "type": "data",
+            "value": "9"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Stock-Reports-Plus-Earnings-Score",
+            "type": "data",
+            "value": "10"
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-1-Business-Description-(AI-Applied)",
+            "type": "data",
+            "value": "AutoZone, Inc. is a retailer and distributor of automotive replacement parts and accessories in the Americas. The Company's Auto Parts Stores segment is the retailer and distributor of automotive parts and accessories through the Company's, stores in the United States, Mexico, and Brazil. Each store carries an extensive product line for cars, sport utility vehicles, vans and light trucks, including new and remanufactured automotive hard parts, maintenance items, accessories, and non-automotive products. Its other segments include ALLDATA, which produces, sells and maintains diagnostic, repair and shop management software used in the automotive repair industry and E-commerce, which includes direct sales to customers through www.autozone.com for sales that are not fulfilled by local stores. The Company has approximately 6,168 stores in the United States, 703 in Mexico, and 72 in Brazil for a total store count of 6,943."
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-2-Business-Description-(AI-Applied)",
+            "type": "data",
+            "value": "Advance Auto Parts, Inc. is an automotive aftermarket parts provider in North America, serving both professional installers and do-it-yourself (DIY) customers. Its stores and branches offer a selection of brand names, original equipment manufacturers (OEM), and brand-owned automotive replacement parts, accessories, batteries and maintenance items for domestic and imported cars, vans, sport utility vehicles, and light and heavy-duty trucks. It operates approximately 4,770 stores and 316 branches within the United States, Canada, Puerto Rico, and the United States Virgin Islands. The Company operates through four trade names: Advance Auto Parts, Autopart International, Carquest, and Worldpac. Its Advance Auto Parts focus on both professional and DIY customers. The stores carry a variety of products serving aftermarket auto part needs for both domestic and import vehicles. Its Autopart International operates in the North-eastern and Mid-Atlantic regions of the United States."
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-3-Business-Description-(AI-Applied)",
+            "type": "data",
+            "value": "Genuine Parts Company is a service company that is engaged in the distribution of automotive and industrial replacement parts. Its segments include Automotive Parts Group and Industrial Parts Group. The Automotive Parts Group is an automotive network of parts and care, distributing automotive parts, accessories and service items in North America, Europe, and Australasia. The Automotive Parts Group offers complete inventory, cataloging, marketing, training, and other programs to the automotive aftermarket. The Industrial Parts Group distributes industrial replacement parts and related supplies, such as bearings, mechanical and electrical power transmission products, industrial automation and robotics, hoses, hydraulic and pneumatic components, industrial and safety supplies and material handling products to maintenance, repair and operation and original equipment manufacturer customers throughout the United States, Canada, Mexico and Australasia."
+        },
+        {
+            "property": "Source Text",
+            "layerName": "Peer-4-Business-Description-(AI-Applied)",
+            "type": "data",
+            "value": "Tractor Supply Company is a rural lifestyle retailer in the United States. The Company is focused on supplying the needs of recreational farmers and ranchers. It operates retail stores under the names Tractor Supply Company, Petsense by Tractor Supply, and Orscheln Farm and Home. Its stores are located primarily in towns outlying various metropolitan markets and in rural communities. The Company also offers its products through the Tractor Supply mobile application and online at tractorsupply.com and petsense.com. The Company's selection of merchandise consists of various product categories, including livestock and pet; hardware, tools and trucks; seasonal, gift and toy products; clothing and footwear, and agriculture. Its brands include 4health, JobSmart, Bit & Bridle, Paws & Claws, Blue Mountain, Producer\u2019s Pride, C.E. Schmidt, Redstone, Dumor, Untamed, Treeline, Countyline and Royal Wing. The Company operates approximately 2,333 retail stores in 49 states."
+        },
+        {
+            "src": "235.6300",
+            "layerName": "Vertical-Video",
+            "type": "video"
+        },
+        {
+            "src": "https://cms.wealthcx.com/wcxresources/stock_media/stock_media_usa/stock_media_usa_orly/stock_media_usa_orly_vertical.mp4",
+            "layerName": "Horizontal-Video-1",
+            "type": "video"
+        },
+        {
+            "src": "https://cms.wealthcx.com/wcxresources/stock_media/stock_media_usa/stock_media_usa_orly/stock_media_usa_orly_horizontal1.mp4",
+            "layerName": "Horizontal-Video-2",
+            "type": "video"
+        },
+        {
+            "src": "https://cms.wealthcx.com/wcxresources/stock_media/stock_media_usa/stock_media_usa_orly/stock_media_usa_orly_horizontal2.mp4",
+            "layerName": "Horizontal-Video-3",
+            "type": "video"
+        },
+        {
+            "src": "https://cms.wealthcx.com/wcxresources/stock_media/stock_media_usa/stock_media_usa_orly/stock_media_usa_orly_horizontal3.mp4",
+            "layerName": "Logo-Icon-Image",
+            "type": "image"
+        },
+        {
+            "src": "https://cms.wealthcx.com/wcxresources/logo/logo_usa/logo_usa_orly/logo_usa_orly_icon.png",
+            "layerName": "Music",
+            "type": "audio"
+        }
+    ],
+    "actions": {
+        "postrender": [
+            {
+                "output": "ORLY-O_RFT3_1680850793612.mp4",
+                "module": "@nexrender/action-encode",
+                "preset": "mp4"
+            },
+            {
+                "output": "G:/Nexrender_Video_Server/Output_Videos/ORLY-O_RFT3_1680850793612.mp4",
+                "input": "ORLY-O_RFT3_1680850793612.mp4",
+                "module": "@nexrender/action-copy"
+            }
+        ]
+    }
+}

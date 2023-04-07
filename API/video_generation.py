@@ -20,7 +20,7 @@ def generate_video(json_path):
     p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path], stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
     """
 
-    p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path], stderr=sys.stdout, stdout=subprocess.PIPE)
+    p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path, "--ae", "reuse"], stderr=sys.stdout, stdout=subprocess.PIPE)
     
     #capture stdout until rendering finished.
     #only print stdout for every 10%
@@ -56,7 +56,7 @@ def extract_template_no(input, exp = r'-Template-(\d+)_'):
 
 def generate_video_from_string(json, csv):
     template_no = extract_template_no(json["template"]["composition"])
-    json_path = TEMP_JSON_PATH.format(template_no,"temporary")
+    json_path = TEMP_JSON_PATH.format(template_no)
     csv_path = TEMP_CSV_PATH.format(template_no)
     #write json to file
     with open(json_path,"w") as f:

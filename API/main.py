@@ -5,11 +5,12 @@ import base64
 import threading
 import json
 from constants.my_constants import *
-from video_generation import generate_video_from_string
+from video_generation import generate_video_from_string, generate_video
 import requests
 from datetime import datetime
 import pytz
 import pysftp
+import shutil
 #remove following line if SSL certificate is ready
 #import urllib3; urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -25,8 +26,11 @@ mutex = threading.Lock()
 
 def background_generation_task(post_data):
     mutex.acquire()
-    try:
-        for single_request in post_data:
+    cnt = 0
+    
+    print(f"Generating {len(post_data)} videos...")
+    for single_request in post_data:
+        try:
             file_name = single_request["json_file"]["actions"]["postrender"][0]["output"]
             single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
             #print(single_request["csv_file"])
@@ -37,17 +41,26 @@ def background_generation_task(post_data):
             
             with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
                 sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
-
             print(f'Upload done for {file_name}.')
-
             #confirm completion of video transferring
             #Comment after certificate ready
-
             #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=False)
             requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=CONFIRM_API_CERT_PATH)
-        print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.")
-    finally:
-        mutex.release()
+            
+        except Exception as e:
+            print(e)
+            
+            #log the .csv and .json with error
+            shutil.copy2(TEMP_JSON_PATH.format(template_no), ERROR_LOGS_PATH + file_name + '.json')
+            shutil.copy2(TEMP_CSV_PATH.format(template_no), ERROR_LOGS_PATH + file_name + '.csv')
+            #probably try rerun the program
+        finally:
+            cnt += 1
+            print(f"{len(post_data) - cnt} tasks remaining for the current task\n")
+
+
+    print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.") 
+    mutex.release()
 
 
 
@@ -87,7 +100,7 @@ class ServerHandler(BaseHTTPRequestHandler):
     #only handle request at path /
     def do_POST(self):
         if self.path not in ServerHandler.ROUTES:
-            print("Posting wrong address.")
+            print(f"Posting wrong address {self.path}.")
             self.send_response(400)
             self.end_headers()
             self.wfile.write(b'Not accessible.')  
@@ -107,13 +120,13 @@ class ServerHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.headers.get('Authorization').encode('utf-8'))
             self.wfile.write(b'not authenticated')
     
-    '''
+    
     def log_message(self, format, *args):
         """
         Disable logging.
         """
         return
-    '''
+    
 def main():
     """
     Main function.
