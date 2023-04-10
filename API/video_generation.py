@@ -54,6 +54,8 @@ def extract_template_no(input, exp = r'-Template-(\d+)_'):
     result = re.search(exp,input)
     return result.groups()[0]
 
+#infer the template number and generate
+#json here is json object
 def generate_video_from_string(json, csv):
     template_no = extract_template_no(json["template"]["composition"])
     json_path = TEMP_JSON_PATH.format(template_no)
@@ -67,4 +69,3 @@ def generate_video_from_string(json, csv):
 
     generate_video(json_path)
     return template_no
-    
