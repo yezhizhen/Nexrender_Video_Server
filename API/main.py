@@ -30,33 +30,38 @@ def background_generation_task(post_data):
     
     print(f"Generating {len(post_data)} videos...")
     for single_request in post_data:
-        try:
-            file_name = single_request["json_file"]["actions"]["postrender"][0]["output"]
-            single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
-            #print(single_request["csv_file"])
-            #trigger a vid gen task
-            print("Genearting " + file_name)
-            template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
-            #SFTP the file
-            
-            with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
-                sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
-            print(f'Upload done for {file_name}.')
-            #confirm completion of video transferring
-            #Comment after certificate ready
-            #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=False)
-            requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=CONFIRM_API_CERT_PATH)
-            
-        except Exception as e:
-            print(e)
-            
-            #log the .csv and .json with error
-            shutil.copy2(TEMP_JSON_PATH.format(template_no), ERROR_LOGS_PATH + file_name + '.json')
-            shutil.copy2(TEMP_CSV_PATH.format(template_no), ERROR_LOGS_PATH + file_name + '.csv')
-            #probably try rerun the program
-        finally:
-            cnt += 1
-            print(f"{len(post_data) - cnt} tasks remaining for the current task\n")
+        failed_before = False
+        while True:
+            try:
+                if not failed_before:
+                    file_name = single_request["json_file"]["actions"]["postrender"][0]["output"]
+                    single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + file_name
+                    #print(single_request["csv_file"])
+                    #trigger a vid gen task
+                    print("Genearting " + file_name)
+                    template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
+                else:
+                    generate_video(TEMP_JSON_PATH.format(template_no))
+                #SFTP the file  
+                with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
+                    sftp.put(OUTPUT_DIR + file_name, SFTP_DEST.format(template_no) + file_name)
+                print(f'Upload done for {file_name}.')
+                #confirm completion of video transferring
+                #Comment after certificate ready
+                #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=False)
+                requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":file_name}, verify=CONFIRM_API_CERT_PATH)
+                cnt += 1
+                print(f"{len(post_data) - cnt} tasks remaining for the current task\n")
+                break
+            except Exception as e:
+                print(e)
+                if not failed_before:
+                #log the .csv and .json with error
+                    shutil.copy2(TEMP_JSON_PATH.format(template_no), ERROR_LOGS_PATH + file_name + '.json')
+                    shutil.copy2(TEMP_CSV_PATH.format(template_no), ERROR_LOGS_PATH + file_name + '.csv')
+                #probably try rerun the program
+                print("Rerunning with the same files..")
+                failed_before = True
 
 
     print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.") 
