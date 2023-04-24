@@ -54,7 +54,7 @@ def generate_all_in_folder(dir = 'error_log/'):
             except Exception as e:
                 print(e)
                 import time
-                time.sleep(1000)
+                time.sleep(1)
                 #probably try rerun the program
                 print("Rerunning with the same files..")
                 failed_before = True

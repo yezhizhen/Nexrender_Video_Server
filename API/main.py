@@ -24,6 +24,12 @@ JSON received
 """
 mutex = threading.Lock()
 
+def print_t(msg):
+    print(msg + f"      {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}")
+
+def time_now():
+    return (datetime.now(tz=pytz.timezone('Asia/Hong_Kong')))
+
 def background_generation_task(post_data):
     mutex.acquire()
     cnt = 0
@@ -41,6 +47,7 @@ def background_generation_task(post_data):
                     print("Genearting " + output_name)
                     template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
                 else:
+                    print("Genearting " + output_name)
                     generate_video(TEMP_JSON_PATH.format(template_no))
                 #SFTP the file  
                 with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
@@ -48,12 +55,12 @@ def background_generation_task(post_data):
                 print(f'Upload done for {output_name}.')
                 #confirm completion of video transferring
                 #Comment after certificate ready
-                #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":output_name}, verify=False)
-                requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":output_name}, verify=CONFIRM_API_CERT_PATH)
+                requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":output_name}, verify=False)
+                #requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":output_name}, verify=CONFIRM_API_CERT_PATH)
                 cnt += 1
                 print(f"{len(post_data) - cnt} tasks remaining for the current task\n")
                 break
-            except Exception as e:
+            except FileNotFoundError as e:
                 print(e)
                 if not failed_before:
                 #log the .csv and .json with error
@@ -64,7 +71,7 @@ def background_generation_task(post_data):
                 failed_before = True
 
 
-    print(f"All Completed at {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}.") 
+    print(f"All Completed at {time_now()}.") 
     mutex.release()
 
 
@@ -104,11 +111,12 @@ class ServerHandler(BaseHTTPRequestHandler):
 
     #only handle request at path /
     def do_POST(self):
+        print(f"Post request at {time_now()}.") 
         if self.path not in ServerHandler.ROUTES:
-            print(f"Posting wrong address {self.path}.")
+            print(f"Posting wrong address {self.path} from {self.address_string()}.")
             self.send_response(400)
             self.end_headers()
-            self.wfile.write(b'Not accessible.')  
+            #self.wfile.write(b'Not accessible.')  
 
         elif self.address_string() not in allowed_ips:
             print(f"Invalid IP from {self.address_string()}")

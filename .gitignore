@@ -5,3 +5,5 @@ __pycache__
 *.ppk
 *.crt
 constants/my_constants.py
+Output_Videos
+error_log
