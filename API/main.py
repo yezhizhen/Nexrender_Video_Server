@@ -11,6 +11,7 @@ from datetime import datetime
 import pytz
 import pysftp
 import shutil
+import time
 #remove following line if SSL certificate is ready
 #import urllib3; urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -25,7 +26,7 @@ JSON received
 mutex = threading.Lock()
 
 def print_t(msg):
-    print(msg + f"      {datetime.now(tz=pytz.timezone('Asia/Hong_Kong'))}")
+    print(msg + f". At {time_now()}")
 
 def time_now():
     return (datetime.now(tz=pytz.timezone('Asia/Hong_Kong')))
@@ -44,15 +45,15 @@ def background_generation_task(post_data):
                     single_request["json_file"]["actions"]["postrender"][1]["output"] = OUTPUT_DIR + output_name
                     #print(single_request["csv_file"])
                     #trigger a vid gen task
-                    print("Genearting " + output_name)
+                    print_t("Genearting " + output_name)
                     template_no = generate_video_from_string(single_request["json_file"], single_request["csv_file"])
                 else:
-                    print("Genearting " + output_name)
+                    print_t("Genearting " + output_name)
                     generate_video(TEMP_JSON_PATH.format(template_no))
                 #SFTP the file  
                 with pysftp.Connection(SFTP_HOST, username=SFTP_USERNAME, private_key= PRIVATE_KEY_PATH) as sftp:
                     sftp.put(OUTPUT_DIR + output_name, SFTP_DEST.format(template_no) + output_name)
-                print(f'Upload done for {output_name}.')
+                print_t(f'Upload done for {output_name}.')
                 #confirm completion of video transferring
                 #Comment after certificate ready
                 requests.get(DOWNLOAD_INITIATOR_ENDPOINT, params ={"filename":output_name}, verify=False)
@@ -66,8 +67,11 @@ def background_generation_task(post_data):
                 #log the .csv and .json with error
                     shutil.copy2(TEMP_JSON_PATH.format(template_no), ERROR_LOGS_PATH + output_name + '.json')
                     shutil.copy2(TEMP_CSV_PATH.format(template_no), ERROR_LOGS_PATH + output_name + '.csv')
+                
+                time.sleep(5)
                 #probably try rerun the program
                 print("Rerunning with the same files..")
+                
                 failed_before = True
 
 

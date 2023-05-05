@@ -6,6 +6,9 @@ import time
 import sys
 #import uuid
 
+re1 = re.compile("rendering progress (\d+)%")
+re2 = re.compile("rendering took ~\d+\.\d+ sec")
+
 def generate_video(json_path):
 
     print(f"Generating video with JSON in {json_path}")
@@ -20,19 +23,20 @@ def generate_video(json_path):
     p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path], stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
     """
 
-    p = subprocess.Popen([NEXRENDER_PATH,"--file",json_path, "--ae", "reuse"], stderr=sys.stdout, stdout=subprocess.PIPE)
+    p = subprocess.Popen([NEXRENDER_CLI_PATH,"--file",json_path, "-w", NEXRENDER_WORKING_FOLDER, "--ae", "reuse"], 
+                         stderr=sys.stdout, stdout=subprocess.PIPE)
     
     #capture stdout until rendering finished.
     #only print stdout for every 10%
     for line in p.stdout: #this would keep the new line character in line
         
-        progress = re.search("rendering progress (\d+)%", line.decode())
+        progress = re1.search(line.decode())
         if progress is not None:
             percent = progress.group(1)
             if int(percent) % 20 == 0:
                 print(line.decode())
         else:
-            res = re.findall("rendering took ~\d+\.\d+ sec", line.decode())
+            res = re2.findall(line.decode())
             if len(res) > 0:
                 print(res[0])
                 #without close, wait would cause deadlock
