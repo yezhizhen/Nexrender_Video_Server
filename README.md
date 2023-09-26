@@ -2,7 +2,7 @@
 This project hosts a web server which uses [Nexrender 1.41.1](https://github.com/inlife/nexrender) and Adobe After Effects(**AE**) to generate videos dynamically upon receiving JSON and CSV, based on existing template.
 
 # API
-A web server handling POST request, generating videos, SFTP videos to dest server and then send GET to it to notify filenames.
+A web server handling POST request, generating videos, SFTP videos to dest server and then send GET to notify filenames.
 
 # File Server
 Serve files upon GET request. Only allow ips from constants/my_constants.py to interact.
